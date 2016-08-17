@@ -1,7 +1,7 @@
-var EPub = require("epub");
+var EPub = require("./epub");
 
 //create a model of sample epub file
-var epub = new EPub("pg52800-images.epub", "/imagewebroot/", "/articlewebroot/");
+var epub = new EPub("./files/pg52800-images.epub", "/imagewebroot/", "/articlewebroot/");
 epub.on("error", function(err){
     console.log("ERROR\n-----");
     throw err;
