@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "adm-zip": "^0.4.4",
+    "textversionjs": "^1.0.0",
     "xml2js": "^0.4.4"
   },
   "optionalDependencies": {

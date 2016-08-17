@@ -1,3 +1,9 @@
+#Epub-Count
+Count characters and words from an EPub file
+
+The npm module below was used
+
+
 #epub
 
 **epub** is a node.js module to parse EPUB electronic book files.
@@ -23,7 +29,7 @@ Where
   * **epubfile** is the file path to an EPUB file
   * **imagewebroot** is the prefix for image URL's. If it's */images/* then the actual URL (inside chapter HTML `<img>` blocks) is going to be */images/IMG_ID/IMG_FILENAME*, `IMG_ID` can be used to fetch the image form the ebook with `getImage`. Default: `/images/`
   * **chapterwebroot** is the prefix for chapter URL's. If it's */chapter/* then the actual URL (inside chapter HTML `<a>` links) is going to be */chapters/CHAPTER_ID/CHAPTER_FILENAME*, `CHAPTER_ID` can be used to fetch the image form the ebook with `getChapter`. Default: `/links/`
- 
+
 Before the contents of the ebook can be read, it must be opened (`EPub` is an `EventEmitter`).
 
     epub.on("end", function(){
@@ -96,4 +102,3 @@ Load any file (as a Buffer value) from the ebook.
     var epub = new EPub(...);
     ...
     epub.getFile("css1", function(error, data, mimeType){});
-

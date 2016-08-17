@@ -1,4 +1,4 @@
-/* require epub resource */
+/* require epub module */
 var EPub = require("./epub");
 
 /* create a model of sample epub file */
@@ -30,8 +30,19 @@ function process(){
           contents += data;
           //check if iteration has completed
           if(count >= chapters){
-            console.log(contents);
+            //console.log(contents);
             //do convertion and counting here
+            contents = contents.replace(/<style([\s\S]*?)<\/style>/gi, '');
+            contents = contents.replace(/<script([\s\S]*?)<\/script>/gi, '');
+            contents = contents.replace(/<\/div>/ig, '\n');
+            contents = contents.replace(/<\/li>/ig, '\n');
+            contents = contents.replace(/<li>/ig, '');
+            contents = contents.replace(/<\/ul>/ig, '\n');
+            contents = contents.replace(/<\/p>/ig, '\n');
+            contents = contents.replace(/<br\s*[\/]?>/gi, "\n");
+            contents = contents.replace(/<[^>]+>/ig, '');
+            contents = contents.replace(/[0-9]/g, '');
+            console.log(contents);
             return;
           }
         });
@@ -42,4 +53,5 @@ function process(){
 }
 
 process();
+
 epub.parse();
