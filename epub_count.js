@@ -42,7 +42,10 @@ function process(){
             contents = contents.replace(/<br\s*[\/]?>/gi, '');
             contents = contents.replace(/<[^>]+>/ig, '');
             contents = contents.replace(/[0-9]/g, '');
-            console.log(contents);
+            contents = contents.replace(/\,/g, '');
+            contents = contents.replace('.', '');
+            //console.log(contents);
+            console.log(contents.split(' ').length+" words, "+contents.length+" chars");
             return;
           }
         });
