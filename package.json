@@ -1,23 +1,18 @@
 {
   "name": "epub",
-  "description": "Parse ePub electronic book files with Node.JS",
-  "version": "0.1.6",
-  "author": "Andris Reinman",
+  "description": "Count words and characters in epub files with Node.JS",
+  "version": "0.1.1",
+  "author": "Salifu Mutaru",
   "contributors": [
     {
-      "name": "andris",
-      "email": "andris@node.ee"
-    },
-    {
-      "name": "Julien Chaumond",
-      "email": "chaumond@gmail.com",
-      "url": "https://github.com/julien-c"
+      "name": "Salifu Mutaru",
+      "email": "salifumutaru@gmail.com"
     }
   ],
-  "homepage": "http://github.com/julien-c/epub",
+  "homepage": "https://github.com/salmgazer/",
   "repository": {
     "type": "git",
-    "url": "http://github.com/julien-c/epub.git"
+    "url": "https://github.com/salmgazer/Epub-Count.git"
   },
   "main": "./epub",
   "typings": "./epub.d.ts",
