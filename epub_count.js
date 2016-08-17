@@ -1,10 +1,6 @@
 /* require epub module */
 var EPub = require("./epub");
 
-var htmlparser = require("htmlparser2");
-
-var textVersion = require("textversionjs");
-
 /* create a model of sample epub file */
 var epub = new EPub("./files/pg52800-images.epub", "/imagewebroot/", "/articlewebroot/");
 epub.on("error", function(err){
