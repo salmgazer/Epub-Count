@@ -20,6 +20,9 @@ function loadEpub(filename, imagewebroot, articlewebroot){
   return epub;
 }
 
+var mytext = ""
+
+
 /**
 *
 * process()
@@ -44,34 +47,18 @@ function process(epubObject){
           //check if iteration has completed
           if(count >= chapters){
             //do convertion and counting here
-            contents = contents.replace(/<style([\s\S]*?)<\/style>/gi, '');
-            contents = contents.replace(/<script([\s\S]*?)<\/script>/gi, '');
-            contents = contents.replace(/<\/div>/ig, '');
-            contents = contents.replace(/<\/li>/ig, '');
-            contents = contents.replace(/<li>/ig, '');
-            contents = contents.replace(/<\/ul>/ig, '');
-            contents = contents.replace(/<\/p>/ig, '');
-            contents = contents.replace(/<br\s*[\/]?>/gi, '');
-            contents = contents.replace(/<[^>]+>/ig, '');
-            contents = contents.replace(/[0-9]/g, '');
-            contents = contents.replace(/\,/g, '');
-            contents = contents.replace(/&nbsp;/gi,'');
-            contents = contents.replace(/ +(?= )/g,'');
-            contents = contents.replace(/&amp;/gi,'');
-            contents = contents.replace(/&quot;/gi,'');
-            contents = contents.replace(/&lt;/gi,'');
-            contents = contents.replace(/&gt;/gi,'');
-            contents = contents.replace(/&gt;/gi,'');
-            contents = contents.replace(/\n/gim, '');
-            contents = contents.replace(/\./gim, '');
-            contents = contents.replace(/\:/gim, '');
-            contents = contents.replace(/\s\s+/g, ' ');
-            contents = contents.replace(/-/gi, '');
-            contents = contents.replace(/<(?:.|\s)*?>/g, '');
-            //console.log(contents);
-            console.log(contents.split(' '))
-            console.log(contents.split(' ').length+" words, "+contents.length+" chars");
-            return;
+            contents = clean(contents);
+            words = contents.split(' ');
+            wordcount = 0;
+            characters = 0;
+            for(i = 0; i < words.length; i++){
+              if(words[i].length > 1 || words[i] === 'a'){
+                wordcount++;
+                characters += words[i].length;
+                console.log(words[i]);
+              }
+            }
+            return (wordcount+" words, "+contents.length+" chars");
           }
         });
         //update count of chapters read
@@ -80,7 +67,49 @@ function process(epubObject){
   });
 }
 
+/**
+*
+* clean(contents)
+*
+* remove all unwanted characters from text
+* @param contents
+* @return String
+*/
+function clean(contents){
+  contents = contents.replace(/<style([\s\S]*?)<\/style>/gi, '');
+  contents = contents.replace(/<script([\s\S]*?)<\/script>/gi, '');
+  contents = contents.replace(/<\/div>/ig, '');
+  contents = contents.replace(/<\/li>/ig, '');
+  contents = contents.replace(/<li>/ig, '');
+  contents = contents.replace(/<\/ul>/ig, '');
+  contents = contents.replace(/<\/p>/ig, '');
+  contents = contents.replace(/<br\s*[\/]?>/gi, ' ');
+  contents = contents.replace(/<[^>]+>/ig, '');
+  contents = contents.replace(/[0-9]/g, '');
+  contents = contents.replace(/\,/g, '');
+  contents = contents.replace(/&nbsp;/gi,'');
+  contents = contents.replace(/ +(?= )/g,'');
+  contents = contents.replace(/&amp;/gi,'');
+  contents = contents.replace(/&quot;/gi,'');
+  contents = contents.replace(/&lt;/gi,'');
+  contents = contents.replace(/&gt;/gi,'');
+  contents = contents.replace(/&gt;/gi,'');
+  contents = contents.replace(/\n/gi, ' ');
+  contents = contents.replace(/\./gim, '');
+  contents = contents.replace(/\:/gim, '');
+  contents = contents.replace(/\s\s+/g, ' ');
+  contents = contents.replace(/<(?:.|\s)*?>/g, '');
+  contents = contents.replace(/\$/g, '');
+  contents = contents.replace(/[{()}]/g, '');
+  contents = contents.replace(/[^a-zA-Z ]/g, "");
+  contents = contents.replace(/[ ]{2,}/gi," ");//2 or more space to 1
+  contents = contents.replace(/(^\s*)|(\s*$)/gi,"");//exclude  start and end white-space
+  contents = contents.replace(/\n/," "); // exclude newline with a start spacing
+  return contents;
+}
+
 // do some testing here
-myepub = loadEpub("./files/pg1322-images.epub", "/imagewebroot/", "/articlewebroot/");
+myepub = loadEpub("./files/pg52800.epub", "/imagewebroot/", "/articlewebroot/");
 myepub.parse();
-process(myepub);
+line = process(myepub);
+console.log(line);
