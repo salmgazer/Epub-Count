@@ -20,6 +20,7 @@ function loadEpub(filename, imagewebroot, articlewebroot){
   return epub;
 }
 
+
 /**
 *
 * process()
@@ -44,34 +45,19 @@ function process(epubObject){
           //check if iteration has completed
           if(count >= chapters){
             //do convertion and counting here
-            contents = contents.replace(/<style([\s\S]*?)<\/style>/gi, '');
-            contents = contents.replace(/<script([\s\S]*?)<\/script>/gi, '');
-            contents = contents.replace(/<\/div>/ig, '');
-            contents = contents.replace(/<\/li>/ig, '');
-            contents = contents.replace(/<li>/ig, '');
-            contents = contents.replace(/<\/ul>/ig, '');
-            contents = contents.replace(/<\/p>/ig, '');
-            contents = contents.replace(/<br\s*[\/]?>/gi, '');
-            contents = contents.replace(/<[^>]+>/ig, '');
-            contents = contents.replace(/[0-9]/g, '');
-            contents = contents.replace(/\,/g, '');
-            contents = contents.replace(/&nbsp;/gi,'');
-            contents = contents.replace(/ +(?= )/g,'');
-            contents = contents.replace(/&amp;/gi,'');
-            contents = contents.replace(/&quot;/gi,'');
-            contents = contents.replace(/&lt;/gi,'');
-            contents = contents.replace(/&gt;/gi,'');
-            contents = contents.replace(/&gt;/gi,'');
-            contents = contents.replace(/\n/gim, '');
-            contents = contents.replace(/\./gim, '');
-            contents = contents.replace(/\:/gim, '');
-            contents = contents.replace(/\s\s+/g, ' ');
-            contents = contents.replace(/-/gi, '');
-            contents = contents.replace(/<(?:.|\s)*?>/g, '');
-            //console.log(contents);
-            console.log(contents.split(' '))
-            console.log(contents.split(' ').length+" words, "+contents.length+" chars");
-            return;
+            contents = clean(contents);
+            words = contents.split(' ');
+            wordcount = 0;
+            characters = 0;
+            truewords = "";
+            for(i = 0; i < words.length; i++){
+              if(words[i].length > 1 || words[i] === 'a'){
+                wordcount++;
+                characters += words[i].length;
+                //console.log(words[i]);
+              }
+            }
+            console.log(wordcount+" words, "+contents.length+" chars");
           }
         });
         //update count of chapters read
@@ -80,7 +66,47 @@ function process(epubObject){
   });
 }
 
+/**
+*
+* clean(contents)
+*
+* remove all unwanted characters from text
+* @param contents
+* @return String
+*/
+function clean(contents){
+  contents = contents.replace(/<style([\s\S]*?)<\/style>/gi, '');    // remove all <style> tags
+  contents = contents.replace(/<script([\s\S]*?)<\/script>/gi, '');  // remove all <script> tags
+  contents = contents.replace(/<\/div>/ig, '');                      // remove all <div> tags
+  contents = contents.replace(/<\/li>/ig, '');                       // remove all <li> tags
+  contents = contents.replace(/<\/ul>/ig, '');                       // remove all <ul> tags
+  contents = contents.replace(/<\/p>/ig, '');                        // remove all <p> tags
+  contents = contents.replace(/<br\s*[\/]?>/gi, ' ');                // remove <br> tags
+  contents = contents.replace(/<[^>]+>/ig, '');
+  contents = contents.replace(/[0-9]/g, '');                         // remove all numbers
+  contents = contents.replace(/\,/g, '');                            // remove all commas
+  contents = contents.replace(/&nbsp;/gi,'');                        // remove all special html characters
+  contents = contents.replace(/&amp;/gi,'');
+  contents = contents.replace(/&quot;/gi,'');
+  contents = contents.replace(/&lt;/gi,'');
+  contents = contents.replace(/&gt;/gi,'');
+  contents = contents.replace(/&gt;/gi,'');                          // end remove all special html characters
+  contents = contents.replace(/\n/gi, ' ');                          // remove newline
+  contents = contents.replace(/\./gim, '');                          // remove period
+  contents = contents.replace(/\:/gim, '');                          // remove colon
+  contents = contents.replace(/\;/gim, '');                          // remove semi-colons
+  contents = contents.replace(/\s\s+/g, ' ');                        // remove apostrophe
+  contents = contents.replace(/<(?:.|\s)*?>/g, '');
+  contents = contents.replace(/\$/g, '');                            // remove dollar sign
+  contents = contents.replace(/[{()}]/g, '');                        // remove brackets
+  contents = contents.replace(/[^a-zA-Z ]/g, "");                    // remove everything that is not an alphabet
+  contents = contents.replace(/[ ]{2,}/gi," ");                      // convert 2> spaces to 1
+  contents = contents.replace(/(^\s*)|(\s*$)/gi,"");                 //exclude  start and end white-space
+  contents = contents.replace(/\n/," ");                             // exclude newline with a start spacing
+  return contents;
+}
+
 // do some testing here
-myepub = loadEpub("./files/pg1322-images.epub", "/imagewebroot/", "/articlewebroot/");
+myepub = loadEpub("./files/pg28644.epub", "/imagewebroot/", "/articlewebroot/");
 myepub.parse();
 process(myepub);
