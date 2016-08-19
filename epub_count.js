@@ -105,7 +105,7 @@ function clean(contents){
   return contents;
 }
 
-// do some testing here
-myepub = loadEpub("./files/pg28644.epub", "/imagewebroot/", "/articlewebroot/");
-myepub.parse();
-process(myepub);
+ //do some testing here
+ myepub = loadEpub("./files/pg28644.epub", "/imagewebroot/", "/articlewebroot/");
+ myepub.parse();
+ process(myepub);

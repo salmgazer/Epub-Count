@@ -3,15 +3,22 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Basic ePubJS Example</title>
+        <title>Worldreader Test Epud-Reader App</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
+        <!-- require -->
+        <!--<script src="require.js"></script>-->
         <!-- zip -->
+        <script src="./resources/bootstrap/css/bootstrap.css"></script>
+
         <script src="./build/libs/zip.min.js"></script>
         <!-- EPUBJS Renderer -->
         <script src="./build/epub.js"></script>
+
+        <!-- Epub count -->
+        <!--<script src="epub_count.js"></script>-->
 
         <style type="text/css">
 
@@ -70,7 +77,11 @@
          <script>
             "use strict";
 
-            var Book = ePub("./files/pg52800-images.epub");
+            var Book = ePub("./files/pg52800-images.epub", {
+              width: 400,
+              height: 600,
+              spreads : false
+            });
 
         </script>
     </head>
@@ -96,5 +107,7 @@
             Book.renderTo("area");
 
         </script>
+        <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
