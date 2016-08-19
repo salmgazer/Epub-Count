@@ -49,7 +49,6 @@ function process(epubObject){
             words = contents.split(' ');
             wordcount = 0;
             characters = 0;
-            truewords = "";
             for(i = 0; i < words.length; i++){
               if(words[i].length > 1 || words[i] === 'a'){
                 wordcount++;
