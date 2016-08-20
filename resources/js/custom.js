@@ -29,6 +29,7 @@ function endOfBook(book){
   book.goto(lastPageUrl, true);
 }
 
-Book.getToc().then(function(toc){
+
+/*Book.getToc().then(function(toc){
     console.log(toc);
-});
+});*/
