@@ -14,8 +14,6 @@
 
         <link rel="stylesheet" href="./resources/css/basic.css">
 
-        <!-- require -->
-        <!--<script src="require.js"></script>-->
         <!-- zip -->
         <link rel="stylesheet" type="text/css" href="./resources/bootstrap/css/bootstrap.min.css"/>
 
@@ -24,7 +22,7 @@
         <script src="./build/epub.js"></script>
 
         <!-- Epub count -->
-        <!--<script src="epub_count.js"></script>-->
+        <script src="epub_count.js"></script>
 
         <style type="text/css">
 
@@ -35,7 +33,7 @@
 
           #wrapper {
             width: 480px;
-            height: 550px;
+            height: 600px;
             overflow: hidden;
             border: 1px solid #ccc;
             margin: 20px auto;
@@ -91,7 +89,7 @@
 
              var Book = ePub("./files/pg52800-images.epub", {
                width: 400,
-               height: 600,
+               height: 500,
                spreads : false
              });
 
@@ -107,6 +105,11 @@
                     <div class="col-md-3">
                       <button class="btn btn-success pull-left" onclick="startOfBook(Book)">Start of Book</button>
                     </div>
+                    <div class="col-md-3">
+                      <center>
+                        <a href="#" id="count_area"></a>
+                      </center>
+                    </div>
                     <div class="col-md-3 pull-right">
                       <button class="btn btn-danger" onclick="endOfBook(Book)">End of book</button>
                     </div>
@@ -121,13 +124,21 @@
           </div>
           <div id="next" onclick="Book.nextPage();" class="arrow">›</div>
         </div>
-
         <script>
 
             Book.renderTo("area").then(function(){
               //Book.setStyle("width", "400px");
+			        // do some dynamic UI changes to book when loaded
             });
 
+            var actual_count = 0;                               // number of pages counted already
+            Book.allWords(function(htmlContent){                //
+              actual_count += 1;
+              if(actual_count == Book.spine.length - 1){
+                wordCount = extractWords(htmlContent);
+                document.getElementById("count_area").innerHTML = wordCount + " words";
+              }
+            });
         </script>
         <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>

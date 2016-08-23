@@ -1,5 +1,5 @@
 /* require epub module */
-var EPub = require("./epub");
+var EPub = require("epub");
 
 /**
 * loadEpub(filename, imagewebroot, articlewebroot)
@@ -105,7 +105,22 @@ function clean(contents){
   return contents;
 }
 
+function extractWords(contents){
+    //do convertion and counting here
+    contents = clean(contents);
+    words = contents.split(' ');
+    wordcount = 0;
+    characters = 0;
+    for(i = 0; i < words.length; i++){
+      if(words[i].length > 1 || words[i] === 'a'){
+        wordcount++;
+        characters += words[i].length;
+      }
+    }
+    return wordcount;
+}
+
  //do some testing here
- myepub = loadEpub("./files/pg28644.epub", "/imagewebroot/", "/articlewebroot/");
- myepub.parse();
- process(myepub);
+//myepub = loadEpub("./files/pg52800-images.epub", "/imagewebroot/", "/articlewebroot/");
+//myepub.parse();
+//process(myepub);
