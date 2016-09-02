@@ -22,7 +22,7 @@
         <script src="./build/epub.js"></script>
 
         <!-- Epub count -->
-        <script src="epub_count.js"></script>
+        <!--<script src="epub_count.js"></script>-->
 
         <style type="text/css">
 
@@ -92,7 +92,8 @@
                height: 500,
                spreads : false
              });
-
+			 
+			 var wordCount = 0;
         </script>
     </head>
     <body>
@@ -126,19 +127,27 @@
         </div>
         <script>
 
-            Book.renderTo("area").then(function(){
-              //Book.setStyle("width", "400px");
-			        // do some dynamic UI changes to book when loaded
-            });
+        Book.renderTo("area").then(function(){
+          //Book.setStyle("width", "400px");
+		  // do some dynamic UI changes to book when loaded
+        });
 
-            var actual_count = 0;                               // number of pages counted already
-            Book.allWords(function(htmlContent){                //
-              actual_count += 1;
-              if(actual_count == Book.spine.length - 1){
-                wordCount = extractWords(htmlContent);
-                document.getElementById("count_area").innerHTML = wordCount + " words";
-              }
-            });
+		Book.on('renderer:locationChanged', function(locationCfi){
+			//Book.getWordsRead(locationCfi, function(htmlContent){
+				//wordsRead = extractWords(htmlContent);
+				//document.getElementById("count_area").innerHTML = wordsRead + "words out of " + wordCount + "words."
+				//});
+			Book.getWordsRead(locationCfi);
+		});
+
+        var actual_count = 0;                               // number of chapters counted already
+        Book.allWords(function(htmlContent){                
+          actual_count += 1;
+          if(actual_count == Book.spine.length - 1){
+            wordCount = extractWords(htmlContent);
+            document.getElementById("count_area").innerHTML = wordCount + " words";
+          }
+        });
         </script>
         <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
