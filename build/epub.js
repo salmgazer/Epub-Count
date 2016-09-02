@@ -2079,8 +2079,11 @@ EPUBJS.Book.prototype.generatePageList = function(width, height, flag){
 	return deferred.promise;
 };
 
+/**
+* @author Salifu Mutaru salifumutaru@gmail.com
+*/
 EPUBJS.Book.prototype.allWords = function(callback){
-	var book  = this;
+  var book  = this;
   var count = 0;
   var all_content = "";
 
@@ -2088,23 +2091,108 @@ EPUBJS.Book.prototype.allWords = function(callback){
   	book.ready.spine.promise.then(function(){
   		for(i = 0; i < book.spine.length; i++){
   			mychap = new EPUBJS.Chapter(book.spine[i], book.store);
-        mynextchap = new EPUBJS.Chapter(book.spine[i + 1], book.store);
-        if(mychap){
-        EPUBJS.core.request(mychap.absolute);
+	        mynextchap = new EPUBJS.Chapter(book.spine[i + 1], book.store);
+	        if(mychap){
+		        EPUBJS.core.request(mychap.absolute);
 				mychap.render().then(function(html){
-          count += 1;
-          all_content += html;
-          callback(all_content);
-				  });
-        }
+		        count += 1;
+		        all_content += html;
+		        callback(all_content);
+				});
+	        }
   		}
   	});
   });
 };
 
-EPUBJS.Book.prototype.getAllWords = function(){
-  return all_content;
+/**
+* @author Salifu Mutaru salifumutaru@gmail.com
+*/
+
+EPUBJS.Book.prototype.getWordsRead = function(locationCfi){
+    var epubcfi = new EPUBJS.EpubCFI();
+    var doc = Book.renderer.doc;
+    var mark = document.createElement("a");
+	
+
+    // Give the marker an unique id
+    mark.id = "look-for-me-1234";
+	mark.style.backgroundColor = "red";
+	mark.innerHTML = "Bookmark here";
+
+    // Add the marker
+    //epubcfi.addMarker(locationCfi, doc, marker);
+  	epubcfi.addMarker(locationCfi, doc, mark);
+
+    // Counter words from start of document
+	//var book = this;
+	//var count = 0;
+	//var content_read = "";
+	
+	/*book.ready.all.then(function(){
+		book.ready.spine.promise.then(function(){
+			for(i = 0; i < book.spine.length; i++){
+				mychap = new EPUBJS.Chapter(book.spine[i], book.store);
+				mynextchap = new EPUBJS.Chapter(book.spine[i + 1], book.store);
+				if(mychap){
+					EPUBJS.core.request(mychap.absolute);
+					mychap.render().then(function(html){
+						count += 1;
+						// check if bookmark is here...
+						var last_words = checkbookmark(html);
+						//if not bookmark, add all html
+						if(!last_words){
+							content_read += html;
+						}else{
+							content_read += last_words;
+							callback(content_read);
+							//break when marker is found
+						}
+					});
+				}
+			}
+		});
+	});*/
+
+    // Remove the marker
+    //epubcfi.removeMarker(mark, doc);
 }
+
+
+/**
+* @author Salifu Mutaru salifumutaru@gmail.com
+*/
+EPUBJS.Book.prototype.readWords = function(callback){
+	var book = this;
+	var count = 0;
+	var content_read = "";
+	
+	book.ready.all.then(function(){
+		book.ready.spine.promise.then(function(){
+			for(i = 0; i < book.spine.length; i++){
+				mychap = new EPUBJS.Chapter(book.spine[i], book.store);
+				mynextchap = new EPUBJS.Chapter(book.spine[i + 1], book.store);
+				if(mychap){
+					EPUBJS.core.request(mychap.absolute);
+					mychap.render().then(function(html){
+						count += 1;
+						// check if bookmark is here...
+						var last_words = checkbookmark(html);
+						//if not bookmark, add all html
+						if(!last_words){
+							content_read += html;
+						}else{
+							content_read += last_words;
+							callback(content_read);
+						}
+					});
+				}
+			}
+		});
+	});
+}
+
+
 
 // Render out entire book and generate the pagination
 // Width and Height are optional and will default to the current dimensions
