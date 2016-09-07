@@ -140,14 +140,20 @@
 			Book.getWordsRead(locationCfi);
 		});
 
-        var actual_count = 0;                               // number of chapters counted already
-        Book.allWords(function(htmlContent){                
-          actual_count += 1;
-          if(actual_count == Book.spine.length - 1){
-            wordCount = extractWords(htmlContent);
-            document.getElementById("count_area").innerHTML = wordCount + " words";
-          }
-        });
+		// async function to read html content from epub file and send all html content to callbacl function bookContent
+		Book.allWords(bookContent);
+		
+		/**
+		* @author Salifu Mutaru salifumutaru@gmail.com
+		* bookContent(book_content) is a callback function that receives all content of an epub book in html format
+		* bookContent(book_content) reads all words and characters of an html content
+		* @param book_content String
+		* @return void
+		*/
+		function bookContent(book_content){
+			wordCount = extractWords(book_content);
+			document.getElementById("count_area").innerHTML = wordCount + " words";
+		}
         </script>
         <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>

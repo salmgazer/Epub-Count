@@ -2081,29 +2081,35 @@ EPUBJS.Book.prototype.generatePageList = function(width, height, flag){
 
 /**
 * @author Salifu Mutaru salifumutaru@gmail.com
+* allWords
+* counts all words in an epub
 */
+
+
 EPUBJS.Book.prototype.allWords = function(callback){
   var book  = this;
-  var count = 0;
   var all_content = "";
-
+  
   book.ready.all.then(function(){
   	book.ready.spine.promise.then(function(){
+		var all_content = "";
+		var promises = [];
   		for(i = 0; i < book.spine.length; i++){
   			mychap = new EPUBJS.Chapter(book.spine[i], book.store);
-	        mynextchap = new EPUBJS.Chapter(book.spine[i + 1], book.store);
-	        if(mychap){
-		        EPUBJS.core.request(mychap.absolute);
-				mychap.render().then(function(html){
-		        count += 1;
-		        all_content += html;
-		        callback(all_content);
-				});
-	        }
+			EPUBJS.core.request(mychap.absolute);
+			mychap.render().then(function(html){
+				promises.push(html);
+				all_content += html;
+			});
   		}
+		// after reading from each page
+		$.when.apply(null, promises).then(function() {
+			callback(all_content)
+		 });
   	});
   });
 };
+
 
 /**
 * @author Salifu Mutaru salifumutaru@gmail.com
