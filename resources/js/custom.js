@@ -30,6 +30,29 @@ function endOfBook(book){
   Book.goto(lastPageUrl, true);
 }
 
+/**
+ * 
+ *  extractWords(book)
+ * 
+ * Extracts all words in an html text
+ * @param content is an html text
+ * @return wordcount integer
+ */
+function extractWords(contents){
+    //do convertion and counting here
+    contents = clean(contents);
+    words = contents.split(' ');
+    wordcount = 0;
+    characters = 0;
+    for(i = 0; i < words.length; i++){
+      if(words[i].length > 1 || words[i] === 'a'){
+        wordcount++;
+        characters += words[i].length;
+      }
+    }
+    return wordcount;
+}
+
 
 /*Book.getToc().then(function(toc){
     console.log(toc);
