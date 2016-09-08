@@ -3,7 +3,6 @@ var firstPageUrl = '@public@vhost@g@gutenberg@html@files@52800@52800-h@52800-h-6
 //url to last page -- to be loaded from disk as attribute of book
 var lastPageUrl  = '@public@vhost@g@gutenberg@html@files@52800@52800-h@52800-h-57.htm.html#pgepubid01563';
 
-
 /**
 *
 * startOfBook(Book)
@@ -31,9 +30,9 @@ function endOfBook(book){
 }
 
 /**
- * 
+ *
  *  extractWords(book)
- * 
+ *
  * Extracts all words in an html text
  * @param content is an html text
  * @return wordcount integer

@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
+        <!-- JQUERY -->
+        <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
 
         <!-- EPUBJS Renderer -->
         <script src="./build/epub.min.js"></script>
@@ -94,7 +96,7 @@
                height: 500,
                spreads : false
              });
-			 
+
 			 var wordCount = 0;
         </script>
     </head>
@@ -131,7 +133,7 @@
 
         Book.renderTo("area").then(function(){
           //Book.setStyle("width", "400px");
-		  // do some dynamic UI changes to book when loaded
+		      // do some dynamic UI changes to book when loaded
           // async function to read html content from epub file and send all html content to callbacl function bookContent
 		      Book.allWords(bookContent);
         });
@@ -155,9 +157,30 @@
 			wordCount = extractWords(book_content);
 			document.getElementById("count_area").innerHTML = wordCount + " words";
 		}
+
+    $(document).on('click', 'span', function(){
+      //this.style.backgroundColor = "yellow";
+      alert("span");
+    });
+
+    $(document).on('click', 'p', function(){
+      //this.style.backgroundColor = "green";
+      alert("paragraphf");
+    });
         </script>
-        <script type="text/javascript" src="./jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./resources/js/custom.js"></script>
+        <script>
+        $(document).ready(function() {
+          $(document).on('click','*',function (e) {
+             e.stopPropagation();
+              var tag = this.tagName;
+            //  var index = $(tag ).index(this);  // doesn't work, as it gives the total no. elements
+             //$('#output').html(index);
+             this.style.backgroundColor = "green";
+              alert(tag);
+           });
+        });
+        </script>
     </body>
 </html>

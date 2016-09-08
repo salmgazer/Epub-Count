@@ -2089,7 +2089,7 @@ EPUBJS.Book.prototype.generatePageList = function(width, height, flag){
 EPUBJS.Book.prototype.allWords = function(callback){
   var book  = this;
   var all_content = "";
-  
+
   book.ready.all.then(function(){
   	book.ready.spine.promise.then(function(){
 		var all_content = "";
@@ -2119,7 +2119,7 @@ EPUBJS.Book.prototype.getWordsRead = function(locationCfi){
     var epubcfi = new EPUBJS.EpubCFI();
     var doc = Book.renderer.doc;
     var mark = document.createElement("a");
-	
+
 
     // Give the marker an unique id
     mark.id = "look-for-me-1234";
@@ -2134,7 +2134,7 @@ EPUBJS.Book.prototype.getWordsRead = function(locationCfi){
 	//var book = this;
 	//var count = 0;
 	//var content_read = "";
-	
+
 	/*book.ready.all.then(function(){
 		book.ready.spine.promise.then(function(){
 			for(i = 0; i < book.spine.length; i++){
@@ -2172,7 +2172,7 @@ EPUBJS.Book.prototype.readWords = function(callback){
 	var book = this;
 	var count = 0;
 	var content_read = "";
-	
+
 	book.ready.all.then(function(){
 		book.ready.spine.promise.then(function(){
 			for(i = 0; i < book.spine.length; i++){
@@ -4363,6 +4363,58 @@ EPUBJS.EpubCFI.prototype.parse = function(cfiStr) {
   }
 
   return cfi;
+};
+
+
+/**
+* @author Salifu Mutaru salifumutaru@gmail.com
+*
+*/
+EPUBJS.EpubCFI.prototype.addMarkerClicked = function(cfi, _doc, _marker) {
+  var doc = _doc || document;
+  var marker = _marker || this.createMarker(doc);
+  var parent;
+  var lastStep;
+  var text;
+  var split;
+
+  if(typeof cfi === 'string') {
+    cfi = this.parse(cfi);
+  }
+  // Get the terminal step
+  lastStep = cfi.steps[cfi.steps.length-1];
+
+  // check spinePos
+  if(cfi.spinePos === -1) {
+    // Not a valid CFI
+    return false;
+  }
+
+  // Find the CFI elements parent
+  parent = this.findParent(cfi, doc);
+
+  // find clicked region here
+
+  if(!parent) {
+    // CFI didn't return an element
+    // Maybe it isnt in the current chapter?
+    return false;
+  }
+
+  if(lastStep && lastStep.type === "text") {
+    text = parent.childNodes[lastStep.index];
+    if(cfi.characterOffset){
+      split = text.splitText(cfi.characterOffset);
+      marker.classList.add("EPUBJS-CFI-SPLIT");
+      parent.insertBefore(marker, split);
+    } else {
+      parent.insertBefore(marker, text);
+    }
+  } else {
+    parent.insertBefore(marker, parent.firstChild);
+  }
+
+  return marker;
 };
 
 EPUBJS.EpubCFI.prototype.addMarker = function(cfi, _doc, _marker) {
