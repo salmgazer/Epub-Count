@@ -143,7 +143,7 @@
 				//wordsRead = extractWords(htmlContent);
 				//document.getElementById("count_area").innerHTML = wordsRead + "words out of " + wordCount + "words."
 				//});
-			Book.getWordsRead(locationCfi);
+			Book.addBookmarkSensor(locationCfi);
 		});
 
 		/**
@@ -157,30 +157,8 @@
 			wordCount = extractWords(book_content);
 			document.getElementById("count_area").innerHTML = wordCount + " words";
 		}
-
-    $(document).on('click', 'span', function(){
-      //this.style.backgroundColor = "yellow";
-      alert("span");
-    });
-
-    $(document).on('click', 'p', function(){
-      //this.style.backgroundColor = "green";
-      alert("paragraphf");
-    });
         </script>
         <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./resources/js/custom.js"></script>
-        <script>
-        $(document).ready(function() {
-          $(document).on('click','*',function (e) {
-             e.stopPropagation();
-              var tag = this.tagName;
-            //  var index = $(tag ).index(this);  // doesn't work, as it gives the total no. elements
-             //$('#output').html(index);
-             this.style.backgroundColor = "green";
-              alert(tag);
-           });
-        });
-        </script>
     </body>
 </html>

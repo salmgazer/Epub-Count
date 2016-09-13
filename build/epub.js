@@ -2085,7 +2085,6 @@ EPUBJS.Book.prototype.generatePageList = function(width, height, flag){
 * counts all words in an epub
 */
 
-
 EPUBJS.Book.prototype.allWords = function(callback){
   var book  = this;
   var all_content = "";
@@ -2123,8 +2122,8 @@ EPUBJS.Book.prototype.getWordsRead = function(locationCfi){
 
     // Give the marker an unique id
     mark.id = "look-for-me-1234";
-	mark.style.backgroundColor = "red";
-	mark.innerHTML = "Bookmark here";
+	  mark.style.backgroundColor = "red";
+	  mark.innerHTML = "Bookmark here";
 
     // Add the marker
     //epubcfi.addMarker(locationCfi, doc, marker);
@@ -2164,6 +2163,40 @@ EPUBJS.Book.prototype.getWordsRead = function(locationCfi){
     //epubcfi.removeMarker(mark, doc);
 }
 
+
+/**
+* @author Salifu Mutaru salifumutaru@gmail.com
+*/
+
+EPUBJS.Book.prototype.addBookmarkSensor = function(locationCfi){
+  var epubcfi = new EPUBJS.EpubCFI();
+  var doc = Book.renderer.doc;
+
+  var mark = document.createElement("script");    // raw script
+  var mark1 = document.createElement("script");   // jQuery
+
+  mark1.type = 'text/javascript';
+  mark1.src = '../jquery-3.1.0.min.js';
+
+  mark1.onload = function() {
+    //callFunctionFromScript();
+    // mark.style.backgroundColor = "red";
+    mark.innerHTML =
+        "$(document).ready(function() {"+
+          "$(document).on('click','*',function (e) {"+
+             "e.stopPropagation();"+
+             "var tag = this.tagName;"+
+             "this.style.color = 'red';"+
+             "this.id = 'this-is-a-bookmark';"+
+             "alert(tag);"+
+           "});"+
+        "});";
+      // Add event checker to current html after jQuery has been loaded
+      epubcfi.addMarker(locationCfi, doc, mark);
+  }
+  // Add jQuery to current html in view
+  epubcfi.addMarker(locationCfi, doc, mark1);
+}
 
 /**
 * @author Salifu Mutaru salifumutaru@gmail.com
